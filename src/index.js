@@ -203,7 +203,7 @@ async function getOrCreateRoutingStrategy ({
   teamId,
   teamName
 }) {
-  console.log('getOrCreateRoutingStrategy', arguments)
+  console.log('getOrCreateRoutingStrategy', arguments[0])
 
   // find existing routing strategy
   try {
