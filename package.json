@@ -1,0 +1,16 @@
+{
+  "name": "cwcc-provision-api",
+  "version": "0.1.0",
+  "description": "CWCC provision REST API for dCloud",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "mocha test --timeout 20000"
+  },
+  "author": "Coty Condry <ccondry@cisco.com>",
+  "license": "ISC",
+  "dependencies": {
+    "cwcc-provision-client": "file:../cwcc-provision-client",
+    "dotenv": "^8.0.0"
+  }
+}
