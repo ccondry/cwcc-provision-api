@@ -10,6 +10,7 @@ const client = new Client({
 const userTemplate = require('./templates/user')
 const teamTemplate = require('./templates/team')
 const virtualTeamTemplate = require('./templates/virtual-team')
+const routingStrategyTemplate = require('./templates/routing-strategy')
 
 async function getOrCreateTeam (teamName) {
   console.log('getOrCreateTeam', teamName)
@@ -30,7 +31,7 @@ async function getOrCreateTeam (teamName) {
     // find specific team
     let existingTeam = teams.find(v => v.attributes.name__s === teamName)
     if (existingTeam) {
-      console.log('found existing team', teamName, ':', existingTeam.id)
+      console.log('found existing team', teamName, ':', existingTeam.id, ':', existingTeam.attributes.dbId__l)
       return existingTeam
     } else {
       // no existing team
@@ -51,7 +52,7 @@ async function getOrCreateTeam (teamName) {
     // extract new object ID from response
     teamId = response[0].links[0].href.split('/').pop()
     // log
-    console.log('successfully created new team', teamName)
+    console.log('successfully created new team', teamName, ':', teamId)
   } catch (e) {
     console.log('Failed to create team', teamName, ':', e.message)
     throw e
@@ -62,7 +63,7 @@ async function getOrCreateTeam (teamName) {
     console.log('retrieving new team', teamName, ':', teamId, '...')
     // get team
     const team = await client.team.get(teamId)
-    console.log('returning new team', teamName, ':', teamId)
+    console.log('returning new team', teamName, ':', teamId, ':', team.attributes.dbId__l)
     // return team
     return team
   } catch (e) {
@@ -82,9 +83,9 @@ async function getOrCreateUser (username, teamId) {
       console.log('no existing user found matching username', username)
       // continue after this try block
     } else if (response.auxiliaryMetadata.numberOfRecords === 1) {
-      console.log('existing user', username, 'found. Returning user details.')
       // 1 record
       const existingUser = response.auxiliaryDataList[0]
+      console.log('found existing user', username, ':', existingUser.id)
       // console.log(JSON.stringify(existingUser, null, 2))
       return existingUser
     } else {
@@ -152,7 +153,7 @@ async function getOrCreateVirtualTeam (name) {
     // find specific virtual team
     const existingVirtualTeam = virtualTeams.find(v => v.attributes.name__s === name)
     if (existingVirtualTeam) {
-      console.log('found existing virtual team', name, ':', existingVirtualTeam.id)
+      console.log('found existing virtual team', name, ':', existingVirtualTeam.id, ':', existingVirtualTeam.attributes.dbId__l)
       return existingVirtualTeam
     } else {
       // no existing virtual team
@@ -186,7 +187,7 @@ async function getOrCreateVirtualTeam (name) {
     console.log('retrieving new virtual team', name, ':', virtualTeamId, '...')
     // get virtualTeam
     const virtualTeam = await client.virtualTeam.get(virtualTeamId)
-    console.log('returning new virtual team', name, ':', virtualTeamId)
+    console.log('returning new virtual team', name, ':', virtualTeamId, ':')
     // return virtualTeam
     return virtualTeam
   } catch (e) {
@@ -195,16 +196,96 @@ async function getOrCreateVirtualTeam (name) {
   }
 }
 
+async function getOrCreateRoutingStrategy ({
+  name,
+  virtualTeamDbId,
+  virtualTeamName,
+  teamId,
+  teamName
+}) {
+  console.log('getOrCreateRoutingStrategy', arguments)
+
+  // find existing routing strategy
+  try {
+    const response = await client.routingStrategy.list()
+    const summary = response.auxiliaryDataList.map(v => {
+      return {
+        id: v.id,
+        name: v.attributes.name__s
+      }
+    })
+    console.log('found', response.auxiliaryDataList.length, 'existing routing strategies. Searching for', name, '...')
+    const items = response.auxiliaryDataList
+    // find specific item
+    const existing = items.find(v => v.attributes.name__s === name)
+    if (existing) {
+      console.log('found existing routing strategy', name, ':', existing.id, ':', existing.attributes.dbId__l)
+      return existing
+    } else {
+      // no existing
+      console.log('routing strategy', name, 'not found. Creating new...')
+    }
+  } catch (e) {
+    console.log('Failed while searching for existing routing strategy', name, ':', e.message)
+    throw e
+  }
+
+  // create new
+  let id
+  try {
+    console.log('creating new routing strategy', name, '...')
+    // build from template
+    const body = routingStrategyTemplate({
+      name,
+      virtualTeamDbId,
+      virtualTeamName,
+      teamId,
+      teamName
+    })
+    console.log('routing strategy template:', body)
+    // create new
+    const response = await client.routingStrategy.create(body)
+    console.log('successfully created new routing strategy', name, ':', JSON.stringify(response, null, 2))
+    // extract routing strategy ID
+    id = response[0].links[0].href.split('/').pop()
+    console.log('Successfully created new routing strategy', name, ':', id)
+  } catch (e) {
+    console.log('Failed to create new routing strategy', name, ':', e.message)
+    throw e
+  }
+
+  // retrieve newly created routing strategy details
+  try {
+    console.log('retrieving new routing strategy', name, ':', id, '...')
+    // get
+    const item = await client.routingStrategy.get(id)
+    console.log('returning new routing strategy', name, ':', id, ':', item.attributes.dbId__l)
+    // return item
+    return item
+  } catch (e) {
+    console.log('Failed to get routing strategy', name, ':', e.message)
+    throw e
+  }
+}
+
 // define async function block
 async function go () {
-  const dcloudUserId = '0325'
-  const teamName = 'T_dCloud_' + dcloudUserId
-  const username = 'rbarrows' + dcloudUserId + '@dcloud.cisco.com'
-  const virtualTeamName = 'Q_dCloud_' + dcloudUserId
+  const dCloudUserId = '0325'
+  const teamName = 'T_dCloud_' + dCloudUserId
+  const username = 'rbarrows' + dCloudUserId + '@dcloud.cisco.com'
+  const virtualTeamName = 'Q_dCloud_' + dCloudUserId
+  const routingStrategyName = 'RS_dCloud_' + dCloudUserId
 
   const team = await getOrCreateTeam(teamName)
   const user = await getOrCreateUser(username, team.id)
   const virtualTeam = await getOrCreateVirtualTeam(virtualTeamName)
+  const routingStrategy = await getOrCreateRoutingStrategy({
+    name: routingStrategyName,
+    virtualTeamName,
+    virtualTeamDbId: virtualTeam.attributes.dbId__l,
+    teamName,
+    teamId: team.attributes.dbId__l
+  })
 }
 
 // run async
