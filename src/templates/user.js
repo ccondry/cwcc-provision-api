@@ -1,7 +1,7 @@
 module.exports = function ({
   username,
   teamId,
-  password = 'temp12345',
+  password = 'C1sco12345',
   firstName = 'Rick',
   lastName = 'Barrows',
   profileId = 'AWwbV8tvhW2lRXH-xsW8',
