@@ -2,6 +2,7 @@
 
 module.exports = function ({
   name,
+  virtualTeamId,
   virtualTeamDbId,
   virtualTeamName,
   teamId,
