@@ -248,10 +248,10 @@ async function getOrCreateRoutingStrategy ({
       teamId,
       teamName
     })
-    console.log('routing strategy template:', body)
+    // console.log('routing strategy template:', body)
     // create new
     const response = await client.routingStrategy.create(body)
-    console.log('successfully created new routing strategy', name, ':', JSON.stringify(response, null, 2))
+    // console.log('successfully created new routing strategy', name, ':', JSON.stringify(response, null, 2))
     // extract routing strategy ID
     id = response[0].links[0].href.split('/').pop()
     console.log('Successfully created new routing strategy', name, ':', id)
