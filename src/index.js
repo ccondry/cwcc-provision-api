@@ -204,6 +204,7 @@ async function getOrCreateVirtualTeam (name) {
 
 async function getOrCreateRoutingStrategy ({
   name,
+  virtualTeamId,
   virtualTeamDbId,
   virtualTeamName,
   teamId,
@@ -243,12 +244,13 @@ async function getOrCreateRoutingStrategy ({
     // build from template
     const body = routingStrategyTemplate({
       name,
+      virtualTeamId,
       virtualTeamDbId,
       virtualTeamName,
       teamId,
       teamName
     })
-    // console.log('routing strategy template:', body)
+    console.log('routing strategy template:', body)
     // create new
     const response = await client.routingStrategy.create(body)
     // console.log('successfully created new routing strategy', name, ':', JSON.stringify(response, null, 2))
