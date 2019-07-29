@@ -173,6 +173,12 @@ async function getOrCreateVirtualTeam (name) {
     console.log('virtual team template:', body)
     // create virtual team
     const response = await client.virtualTeam.create(body)
+    // check HTTP status inside the response
+    if (response[0].code < 200 || response[0].code >= 300) {
+      console.log('Failed to create new virtual team - status code', response[0].code, response[0])
+      // HTTP error code
+      throw Error('Failed to create new virtual team - status code ' + response[0].code, response[0])
+    }
     console.log('successfully created new virtual team', name, ':', JSON.stringify(response, null, 2))
     // extract virtual team ID
     virtualTeamId = response[0].links[0].href.split('/').pop()
