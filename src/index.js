@@ -265,7 +265,7 @@ async function getOrCreateRoutingStrategy ({
     console.log('retrieving new routing strategy', name, ':', id, '...')
     // get
     const item = await client.routingStrategy.get(id)
-    console.log('returning new routing strategy', name, ':', id, ':', item.attributes.dbId__l)
+    console.log('returning new routing strategy', name, ':', id)
     // return item
     return item
   } catch (e) {
