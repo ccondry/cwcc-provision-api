@@ -287,6 +287,7 @@ async function go () {
   const virtualTeam = await getOrCreateVirtualTeam(virtualTeamName)
   const routingStrategy = await getOrCreateRoutingStrategy({
     name: routingStrategyName,
+    virtualTeamId: virtualTeam.id,
     virtualTeamName,
     virtualTeamDbId: virtualTeam.attributes.dbId__l,
     teamName,
