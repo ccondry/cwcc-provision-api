@@ -226,7 +226,7 @@ async function getOrCreateRoutingStrategy ({
     // find specific item
     const existing = items.find(v => v.attributes.name__s === name)
     if (existing) {
-      console.log('found existing routing strategy', name, ':', existing.id, ':', existing.attributes.dbId__l)
+      console.log('found existing routing strategy', name, ':', existing.id, ':')
       return existing
     } else {
       // no existing
