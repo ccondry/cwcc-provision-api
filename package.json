@@ -8,7 +8,7 @@
     "test": "mocha test --timeout 20000"
   },
   "author": "Coty Condry <ccondry@cisco.com>",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "dependencies": {
     "cwcc-provision-client": "^0.1.1",
     "dotenv": "^8.0.0"
