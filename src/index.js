@@ -239,6 +239,7 @@ async function getOrCreateRoutingStrategy ({
 
   // create new
   let id
+  let currentRsId
   try {
     console.log('creating new routing strategy', name, '...')
     // build from template
@@ -257,6 +258,18 @@ async function getOrCreateRoutingStrategy ({
     // extract routing strategy ID
     id = response[0].links[0].href.split('/').pop()
     console.log('Successfully created new routing strategy', name, ':', id)
+    // now build current routing strategy with almost the same body
+    console.log('creating new current routing strategy for today...')
+    // set current RS name
+    body[0].attributes.name__s = 'Current-' + body[0].attributes.name__s
+    // set current status to true
+    body[0].attributes.currentStatus__i = 1
+    // set parent routing strategy ID
+    body[0].attributes.parentStrategyId__s = id
+    // create current RS
+    const response2 = await client.routingStrategy.create(body)
+    currentRsId = response2[0].links[0].href.split('/').pop()
+    console.log('successfully created new current routing strategy', body[0].attributes.name__s, ':', currentRsId)
   } catch (e) {
     console.log('Failed to create new routing strategy', name, ':', e.message)
     throw e
