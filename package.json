@@ -10,7 +10,7 @@
   "author": "Coty Condry <ccondry@cisco.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "cwcc-provision-client": "^0.1.1",
+    "cwcc-provision-client": "^0.1.2",
     "dotenv": "^8.0.0"
   }
 }
