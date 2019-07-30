@@ -277,8 +277,7 @@ async function getOrCreateRoutingStrategy ({
 }
 
 // define async function block
-async function go () {
-  const dCloudUserId = '0325'
+async function go (dCloudUserId) {
   const teamName = 'T_dCloud_' + dCloudUserId
   const username = 'rbarrows' + dCloudUserId + '@dcloud.cisco.com'
   const virtualTeamName = 'Q_dCloud_' + dCloudUserId
@@ -298,4 +297,4 @@ async function go () {
 }
 
 // run async
-go().catch(e => console.log(e.message))
+go('0325').catch(e => console.log(e.message))
