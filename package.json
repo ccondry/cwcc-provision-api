@@ -10,7 +10,12 @@
   "author": "Coty Condry <ccondry@cisco.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "cwcc-provision-client": "^0.1.2",
-    "dotenv": "^8.0.0"
+    "atob": "^2.1.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "mongodb": "^3.3.0-beta2",
+    "request-ip": "^2.1.3"
   }
 }
