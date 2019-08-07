@@ -12,14 +12,12 @@ router.get('/', async function (req, res, next) {
   const host = req.get('host')
   const path = req.originalUrl
   const url = req.protocol + '://' + host + path
-  const operation = 'get user CWCC provision status'
+  const operation = 'get user CWCC phones provision status'
 
   try {
     console.log('user', username, 'at IP', clientIp, operation, method, path, 'requested')
     // check CUCM for if phones are provisioned
-    console.log('user', username, 'at IP', clientIp, operation, method, path, 'successful')
-    // if no data found, return empty object instead of null
-    if (!data) data = {}
+    const data = {}
     const dataLength = Object.keys(data)
     response = `(JSON object with ${dataLength} properties)`
     // log it to db
@@ -54,7 +52,7 @@ router.post('/', async function (req, res, next) {
   const host = req.get('host')
   const path = req.originalUrl
   const url = req.protocol + '://' + host + path
-  const operation = 'provision user for CWCC demo'
+  const operation = 'provision user phones for CWCC demo'
   const body = req.body
 
   try {
