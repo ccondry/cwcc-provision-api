@@ -1,0 +1,2 @@
+# Allow 'administrator' user to restart cwcc-provision-api service
+administrator ALL=NOPASSWD: /bin/systemctl restart cwcc-provision-api.service
