@@ -1,0 +1,15 @@
+[Unit]
+Description=CJP Webex Toolbox HTTP REST API
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/dcloud/cwcc-provision-api
+ExecStart=/usr/bin/node src/index
+Restart=always
+User=root
+Group=root
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
