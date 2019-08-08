@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const model = require('../models/dcloud-session')
+const model = require('../models/session')
 const logger = require('../models/logger')
 
 // get dcloud session information
