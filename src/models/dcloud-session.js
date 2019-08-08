@@ -12,10 +12,10 @@ const sessionFile = process.env.DCLOUD_SESSION_XML || '/dcloud/session.xml'
 
 function readSessionFile () {
   // read the dcloud session file and return the contents of the DIDs section
-  fs.readFile(sessionFile, function (err, data) {
+  fs.readFile(sessionFile, 'utf8', function (err, data) {
     if (err) return console.error(err)
     // parse xml to json object
-    const json = JSON.parse(parser.xml2js(data))
+    const json = parser.xml2js(data)
     // extract the DIDs array
     session = json.session
   })

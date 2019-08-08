@@ -91,8 +91,10 @@ app.use(function(err, req, res, next) {
 Routes
 *****/
 
-// REST endpoint URLs
+// provision user or get provision status
 app.use('/api/v1/cwcc/provision', require('./routes/provision'))
+// get dcloud session information
+app.use('/api/v1/cwcc/session', require('./routes/session'))
 
 /*
 Go
