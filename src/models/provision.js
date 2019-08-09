@@ -36,8 +36,23 @@ async function findOrCreateUser(userId) {
 }
 
 module.exports = {
-  get (user) {
-    // get CUCM provision status of user
+  async get (user) {
+    try {
+      // get CUCM provision status of user
+      const name1 = 'CTIRD1080' + user.id
+      console.log(`checking if device ${name1} already exists`)
+      const phone1 = await cucm.getPhone({name: name1})
+
+      const name2 = 'CTIRD1082' + user.id
+      console.log(`checking if device ${name2} already exists`)
+      const phone2 = await cucm.getPhone({name: name2})
+      return {
+        phone1,
+        phone2
+      }
+    } catch (e) {
+      throw e
+    }
   },
   async provision (user) {
     // provision user on CUCM
