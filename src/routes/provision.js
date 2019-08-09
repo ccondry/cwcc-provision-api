@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const logger = require('../models/logger')
-// const model = require('../models/provision')
+const model = require('../models/provision')
 
 // get provision status for current logged-in user
 router.get('/', async function (req, res, next) {
@@ -17,7 +17,7 @@ router.get('/', async function (req, res, next) {
   try {
     console.log('user', username, 'at IP', clientIp, operation, method, path, 'requested')
     // check CUCM for if phones are provisioned
-    const data = {}
+    const data = await model.get(req.user)
     const dataLength = Object.keys(data)
     response = `(JSON object with ${dataLength} properties)`
     // log it to db
@@ -57,7 +57,7 @@ router.post('/', async function (req, res, next) {
 
   try {
     console.log('user', username, 'at IP', clientIp, operation, method, path, 'requested')
-
+    const results = await model.provision(req.user)
     // return 202 ACCEPTED
     return res.status(202).send()
   } catch (e) {

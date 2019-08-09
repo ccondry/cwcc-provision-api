@@ -4,7 +4,6 @@ const validate = require('./validate')
 // validate .env vars
 validate([
   'ROUTE_PARTITION',
-  'CTI_USER',
   'VIRTUAL_DN_PREFIX',
   'CALLING_SEARCH_SPACE',
   'DEVICE_POOL'
@@ -20,7 +19,7 @@ async function createPhone (axl, {
   username,
   alertingName = '',
   routePartitionName = process.env.ROUTE_PARTITION,
-  ctiUser = process.env.CTI_USER,
+  // ctiUser = process.env.CTI_USER,
   virtualDnPrefix = process.env.VIRTUAL_DN_PREFIX || '444'
 }) {
   // validate input
@@ -142,10 +141,10 @@ async function createPhone (axl, {
 
   // device complete
   // now associate the device with the app user, for CTI control of device
-  try {
-    await axl.associateDeviceWithApplicationUser(deviceUuid.toLowerCase(), ctiUser)
-  } catch (e) {
-    throw e
-  }
+  // try {
+  //   await axl.associateDeviceWithApplicationUser(deviceUuid.toLowerCase(), ctiUser)
+  // } catch (e) {
+  //   throw e
+  // }
 
 }
