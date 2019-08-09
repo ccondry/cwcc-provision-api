@@ -4,6 +4,7 @@ const user = require('./cucm/user.js')
 
 // create phones for user
 async function findOrCreatePhones (userId) {
+  console.log('provision - findOrCreatePhones for', userId)
   try {
     // Extend & Connect Phones
     // sandra's phone
@@ -23,6 +24,7 @@ async function findOrCreatePhones (userId) {
 
 // create a standard CUCM end-user
 async function findOrCreateUser(userId) {
+  console.log('provision - findOrCreateUser for', userId)
   let newUser
   try {
     newUser = await user.get(cucm, userId)
