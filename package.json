@@ -4,8 +4,8 @@
   "description": "CWCC provision REST API for dCloud. Intended to be run on the collab toolbox servers.",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "mocha test --timeout 20000"
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED=0 node src/index.js",
+    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 node test.js"
   },
   "author": "Coty Condry <ccondry@cisco.com>",
   "license": "UNLICENSED",
