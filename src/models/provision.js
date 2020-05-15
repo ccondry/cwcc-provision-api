@@ -1,6 +1,7 @@
 const cucm = require('./cucm/cucm.js')
 const extendAndConnectPhone = require('./cucm/extend-and-connect-phone.js')
 const user = require('./cucm/user.js')
+const ldap = require('./ldap')
 
 // create phones for user
 async function findOrCreatePhones (userId) {
@@ -35,6 +36,55 @@ async function findOrCreateUser(userId) {
   return newUser
 }
 
+
+
+async function createLdapUsers ({
+  userId,
+  password = 'C1sco12345'
+}) {
+  try {
+    await ldap.createUser({
+      firstName: 'Rick',
+      lastName: 'Barrows'+ userId,
+      username: 'rbarrows' + userId,
+      commonName: 'Rick Barrows' + userId,
+      domain: 'cc.dc-01.com',
+      physicalDeliveryOfficeName: userId,
+      telephoneNumber: '1082' + userId,
+      userId,
+      mail: 'rbarrows' + userId + '@cc.dc-01.com',
+      email: 'rbarrows' + userId + '@cc.dc-01.com',
+      description: 'Rick Barrows' + userId,
+      usersDn: 'OU=Sync2Webex,DC=dcloud,DC=cisco,DC=com',
+      password
+    })
+
+    console.log(`LDAP provision successful for user Rick ${userId}`)
+    
+    await ldap.createUser({
+      firstName: 'Sandra' ,
+      lastName: 'Jefferson'+ userId,
+      username: 'sjeffers' + userId,
+      commonName: 'Sandra Jefferson' + userId,
+      domain: 'cc.dc-01.com',
+      physicalDeliveryOfficeName: userId,
+      telephoneNumber: '1080' + userId,
+      userId,
+      mail: 'sjeffers' + userId + '@cc.dc-01.com',
+      email: 'sjeffers' + userId + '@cc.dc-01.com',
+      description: 'Sandra Jefferson' + userId,
+      usersDn: 'OU=Sync2Webex,DC=dcloud,DC=cisco,DC=com',
+      password
+    })
+    
+    console.log(`LDAP provision successful for user Sandra ${userId}`)
+
+  } catch (e) {
+    console.log('Failed LDAP provision for user', userId, ':', e.message)
+  }
+}
+
+
 module.exports = {
   async get (user) {
     try {
@@ -59,5 +109,7 @@ module.exports = {
     await findOrCreateUser(user.id)
     // provision extend and connect phones on CUCM
     await findOrCreatePhones(user.id)
+    // provision LDAP users
+    await createLdapUsers({userId: user.id})
   }
 }
