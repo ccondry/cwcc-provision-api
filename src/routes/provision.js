@@ -52,7 +52,7 @@ router.post('/', async function (req, res, next) {
   const host = req.get('host')
   const path = req.originalUrl
   const url = req.protocol + '://' + host + path
-  const operation = 'provision user phones for CWCC demo'
+  const operation = 'provision user phones and AD accounts for Webex v3 demo'
   const body = req.body
 
   try {
