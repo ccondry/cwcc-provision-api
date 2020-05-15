@@ -57,7 +57,7 @@ router.post('/', async function (req, res, next) {
 
   try {
     console.log('user', username, 'at IP', clientIp, operation, method, path, 'requested')
-    const results = await model.provision(req.user)
+    await model.provision(req.user)
     console.log('user', username, 'at IP', clientIp, operation, method, path, 'successful')
     // return 202 ACCEPTED
     return res.status(202).send()
