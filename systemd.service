@@ -1,5 +1,5 @@
 [Unit]
-Description=CJP Webex Toolbox HTTP REST API
+Description=dCloud Webex Contact Center v3 CUCM and LDAP provision REST API
 After=network.target
 
 [Service]
