@@ -1,6 +1,6 @@
 {
   "name": "cwcc-provision-api",
-  "version": "1.1.0",
+  "version": "2020.11.19",
   "description": "CWCC provision REST API for dCloud. Intended to be run on the collab toolbox servers.",
   "main": "src/index.js",
   "scripts": {
