@@ -95,6 +95,8 @@ Routes
 app.use('/api/v1/cwcc/provision', require('./routes/provision'))
 // get dcloud session information
 app.use('/api/v1/cwcc/session', require('./routes/session'))
+// get this software version
+app.use('/api/v1/cwcc/version', require('./routes/version'))
 
 /*
 Go
