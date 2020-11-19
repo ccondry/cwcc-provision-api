@@ -44,17 +44,17 @@ async function createLdapUsers ({
 }) {
   try {
     await ldap.createUser({
-      firstName: 'Rick',
-      lastName: 'Barrows'+ userId,
+      firstName: 'Rick Barrows',
+      lastName: userId,
       username: 'rbarrows' + userId,
-      commonName: 'Rick Barrows' + userId,
+      commonName: 'Rick ' + userId,
       domain: 'cc1.dc-01.com',
       physicalDeliveryOfficeName: userId,
       telephoneNumber: '1082' + userId,
       userId,
       mail: 'rbarrows' + userId + '@cc1.dc-01.com',
       email: 'rbarrows' + userId + '@cc1.dc-01.com',
-      description: 'Rick Barrows' + userId,
+      description: 'Rick ' + userId,
       usersDn: 'OU=Sync2Webex,DC=dcloud,DC=cisco,DC=com',
       password
     })
@@ -62,17 +62,17 @@ async function createLdapUsers ({
     console.log(`LDAP provision successful for user Rick ${userId}`)
     
     await ldap.createUser({
-      firstName: 'Sandra' ,
-      lastName: 'Jefferson'+ userId,
+      firstName: 'Sandra Jefferson' ,
+      lastName: userId,
       username: 'sjeffers' + userId,
-      commonName: 'Sandra Jefferson' + userId,
+      commonName: 'Sandra ' + userId,
       domain: 'cc1.dc-01.com',
       physicalDeliveryOfficeName: userId,
       telephoneNumber: '1080' + userId,
       userId,
       mail: 'sjeffers' + userId + '@cc1.dc-01.com',
       email: 'sjeffers' + userId + '@cc1.dc-01.com',
-      description: 'Sandra Jefferson' + userId,
+      description: 'Sandra ' + userId,
       usersDn: 'OU=Sync2Webex,DC=dcloud,DC=cisco,DC=com',
       password
     })
