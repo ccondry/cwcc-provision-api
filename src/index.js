@@ -95,6 +95,8 @@ Routes
 app.use('/api/v1/cwcc/provision', require('./routes/provision'))
 // get dcloud session information
 app.use('/api/v1/cwcc/session', require('./routes/session'))
+// deprovision an LDAP account
+app.use('/api/v1/cwcc/deprovision', require('./routes/deprovision'))
 
 /*
 Go
