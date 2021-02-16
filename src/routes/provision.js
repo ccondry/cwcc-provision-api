@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const logger = require('../models/logger')
 const model = require('../models/provision')
+const ldapClient = require('simple-ldap-client')
+// set up ldap client
+const ldap = new ldapClient(process.env.LDAP_URL, process.env.LDAP_BASE_DN)
+const userSearchDn = process.env.LDAP_USER_SEARCH_DN || 'OU=Sync2Webex,DC=dcloud,DC=cisco,DC=com'
 
 // get provision status for current logged-in user
 router.get('/', async function (req, res, next) {
@@ -72,6 +76,30 @@ router.post('/', async function (req, res, next) {
     })
     // return 500 SERVER ERROR
     res.status(500).send(e.message)
+  }
+})
+
+async function deleteLdapUser (cn) {
+  return ldap.deleteUser({
+    adminDn: process.env.LDAP_ADMIN_DN,
+    adminPassword: process.env.LDAP_ADMIN_PASSWORD,
+    userDn: `CN=${cn},${userSearchDn}`
+  })
+}
+
+// deprovision (delete) LDAP users
+router.delete('/:id', async function (req, res, next) {
+  if (!req.user.admin) {
+    return res.status(403).send({message: 'You do not have permission to access this resource'})
+  }
+  try {
+    await deleteLdapUser('Rick ' + req.params.id)
+    await deleteLdapUser('Sandra ' + req.params.id)
+    return res.status(200).send({})
+  } catch (e) {
+    console.log('failed to deprovision', req.params.id, ':', e.message)
+    // return 500 SERVER ERROR
+    res.status(500).send({message: e.message})
   }
 })
 
