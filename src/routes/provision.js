@@ -89,7 +89,15 @@ async function deleteLdapUser (cn) {
 
 // deprovision (delete) LDAP users
 router.delete('/:id', async function (req, res, next) {
-  if (!req.user.admin) {
+  if (
+    req.user.admin || 
+    (
+      req.user.application === 'toolbox-login-api' &&
+      req.user.grant.find(v => v.url === '/api/v1/cwcc/provision/*' && v.method.includes('DELETE'))
+    )
+  ) {
+    // authorized - continue
+  } else {
     return res.status(403).send({message: 'You do not have permission to access this resource'})
   }
   try {
@@ -97,7 +105,7 @@ router.delete('/:id', async function (req, res, next) {
       await deleteLdapUser('Rick ' + req.params.id)
     } catch (e) {
       if (e.message.match('NO_OBJECT')) {
-        // continue - user alraeady deleted
+        // continue - user already deleted
       } else {
         throw e
       }
@@ -106,7 +114,7 @@ router.delete('/:id', async function (req, res, next) {
       await deleteLdapUser('Sandra ' + req.params.id)
     } catch (e) {
       if (e.message.match('NO_OBJECT')) {
-        // continue - user alraeady deleted
+        // continue - user already deleted
       } else {
         throw e
       }
