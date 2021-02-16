@@ -93,9 +93,26 @@ router.delete('/:id', async function (req, res, next) {
     return res.status(403).send({message: 'You do not have permission to access this resource'})
   }
   try {
-    await deleteLdapUser('Rick ' + req.params.id)
-    await deleteLdapUser('Sandra ' + req.params.id)
-    return res.status(200).send({})
+    try {
+      await deleteLdapUser('Rick ' + req.params.id)
+    } catch (e) {
+      if (e.message.match('NO_OBJECT')) {
+        // continue - user alraeady deleted
+      } else {
+        throw e
+      }
+    }
+    try {
+      await deleteLdapUser('Sandra ' + req.params.id)
+    } catch (e) {
+      if (e.message.match('NO_OBJECT')) {
+        // continue - user alraeady deleted
+      } else {
+        throw e
+      }
+    }
+    // done
+    return res.status(200).send()
   } catch (e) {
     console.log('failed to deprovision', req.params.id, ':', e.message)
     // return 500 SERVER ERROR
