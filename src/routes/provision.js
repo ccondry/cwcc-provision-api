@@ -89,15 +89,19 @@ async function deleteLdapUser (cn) {
 
 // deprovision (delete) LDAP users
 router.delete('/:id', async function (req, res, next) {
-  if (
-    req.user.admin || 
-    (
-      req.user.application === 'toolbox-login-api' &&
-      req.user.grant.find(v => v.url === '/api/v1/cwcc/provision/*' && v.method.includes('DELETE'))
-    )
-  ) {
-    // authorized - continue
-  } else {
+  try {
+    if (
+      req.user.admin || 
+      (
+        req.user.application === 'toolbox-login-api' &&
+        req.user.grant.find(v => v.url === '/api/v1/cwcc/provision/*' && v.method.includes('DELETE'))
+      )
+    ) {
+      // authorized - continue
+    } else {
+      throw Error()
+    }
+  } catch (e) {
     return res.status(403).send({message: 'You do not have permission to access this resource'})
   }
   try {
